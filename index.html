@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kỷ Niệm Tình Yêu 💖</title>
+  <!-- Nhập Google Fonts: Mali (chữ viết tay dễ thương) và Inter (sắc nét) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Mali:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- CSS Font Awesome để hiển thị các biểu tượng đẹp mắt -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Hearts (Hiệu ứng trái tim bay nhẹ nhàng ở nền) -->
+  <div class="bg-hearts" id="bg-hearts"></div>
+
+  <!-- ================= MÀN HÌNH ĐĂNG NHẬP ================= -->
+  <div class="container" id="login-screen">
+    <div class="card login-card">
+      <div class="login-layout">
+        <!-- Bên trái: Bàn phím số và ô nhập mật mã -->
+        <div class="login-left">
+          <h2 class="title">💖 Kỷ Niệm 5 Năm Yêu Nhau 💖</h2>
+          <p class="subtitle">Đăng nhập để nhận quà bất ngờ từ anh nhé! 🥰</p>
+          
+          <!-- Hiển thị mã số đã nhập -->
+          <div class="passcode-container">
+            <input type="password" id="passcode-input" placeholder="••••••" readonly maxlength="6">
+          </div>
+
+          <!-- Bàn phím số -->
+          <div class="numpad">
+            <button id="numpad-1" class="num-btn" onclick="pressNum('1')">1</button>
+            <button id="numpad-2" class="num-btn" onclick="pressNum('2')">2</button>
+            <button id="numpad-3" class="num-btn" onclick="pressNum('3')">3</button>
+            
+            <button id="numpad-4" class="num-btn" onclick="pressNum('4')">4</button>
+            <button id="numpad-5" class="num-btn" onclick="pressNum('5')">5</button>
+            <button id="numpad-6" class="num-btn" onclick="pressNum('6')">6</button>
+            
+            <button id="numpad-7" class="num-btn" onclick="pressNum('7')">7</button>
+            <button id="numpad-8" class="num-btn" onclick="pressNum('8')">8</button>
+            <button id="numpad-9" class="num-btn" onclick="pressNum('9')">9</button>
+            
+            <button id="numpad-c" class="num-btn action-btn clear" onclick="clearPasscode()">C</button>
+            <button id="numpad-0" class="num-btn" onclick="pressNum('0')">0</button>
+            <button id="numpad-del" class="num-btn action-btn delete" onclick="deleteLastDigit()"><i class="fa-solid fa-delete-left"></i></button>
+          </div>
+
+          <!-- Các nút chức năng dưới bàn phím -->
+          <button id="hint-btn" class="hint-trigger-btn" onclick="showHintModal()">Gợi Ý Mật Mã</button>
+          <button id="login-submit-btn" class="login-submit-btn" onclick="verifyPassword()">Đăng Nhập 💖</button>
+        </div>
+
+        <!-- Bên phải: Khung ảnh bạn gái -->
+        <div class="login-right">
+          <div class="photo-frame">
+            <img src="Pictures/1.jpg" alt="My Love" id="girlfriend-avatar">
+            <div class="photo-caption">Bé yêu của anh 💖</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MÀN HÌNH CHÍNH (MAIN DASHBOARD) ================= -->
+  <div class="container hidden" id="main-screen">
+    <div class="card main-card">
+      <h1 class="main-title">Happy Anniversary! 🎉</h1>
+      <p class="main-subtitle">Chào mừng bé đến với thế giới tình yêu của chúng mình! 💕</p>
+
+      <!-- Grid 4 lựa chọn -->
+      <div class="menu-grid">
+        <!-- 1. Music -->
+        <div id="menu-music" class="menu-item" onclick="openPopup('music-popup')">
+          <div class="menu-icon-wrapper music-color">
+            <i class="fa-solid fa-music"></i>
+          </div>
+          <span class="menu-number">1. Music</span>
+        </div>
+
+        <!-- 2. Pictures -->
+        <div id="menu-gallery" class="menu-item" onclick="openPopup('gallery-popup')">
+          <div class="menu-icon-wrapper gallery-color">
+            <i class="fa-solid fa-camera-retro"></i>
+          </div>
+          <span class="menu-number">2. Pictures</span>
+        </div>
+
+        <!-- 3. Thư -->
+        <div id="menu-letter" class="menu-item" onclick="openPopup('letter-popup')">
+          <div class="menu-icon-wrapper letter-color">
+            <i class="fa-solid fa-envelope-open-text"></i>
+          </div>
+          <span class="menu-number">3. Thư</span>
+        </div>
+
+        <!-- 4. FallingForYou -->
+        <div id="menu-falling" class="menu-item" onclick="openFallingForYou()">
+          <div class="menu-icon-wrapper falling-color">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <span class="menu-number">4. FallingForYou</span>
+        </div>
+      </div>
+
+      <div class="footer-banner">
+        <p>Chúc Mừng Kỷ Niệm 5 Năm Yêu Nhau! Bấm để khám phá 👇</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HỘP THOẠI POPUP GỢI Ý MẬT MÃ ================= -->
+  <div class="modal-overlay hidden" id="hint-modal">
+    <div class="modal-card">
+      <button id="close-hint-btn" class="modal-close" onclick="closeHintModal()">&times;</button>
+      <div class="modal-header">
+        <h3>💡 Gợi Ý Mật Mã Đăng Nhập</h3>
+      </div>
+      <div class="modal-body">
+        <p>Ôi! Bé quên mật mã rồi sao? Đừng lo nhé, dưới đây là gợi ý dành riêng cho bé:</p>
+        <div class="hint-box">
+          <p><strong>Gợi ý:</strong> Mật mã là <strong>1010</strong> nhé! 😘</p>
+        </div>
+        <p class="hint-sub">Hãy thử nhập lại trên bàn phím nhé!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= POPUP MUSIC (ÂM NHẠC) ================= -->
+  <div class="popup-overlay hidden" id="music-popup">
+    <div class="popup-content music-layout-content">
+      <button id="close-music-btn" class="popup-close-btn" onclick="closePopup('music-popup')">&times;</button>
+      
+      <div class="music-container">
+        <!-- Bên trái: Danh sách các bài nhạc -->
+        <div class="music-list-section">
+          <h3>🎵 Bản Nhạc Cho Em</h3>
+          <p class="section-desc">Bấm vào bài hát bất kỳ dưới đây để nghe:</p>
+          <div class="music-list" id="music-playlist">
+            <!-- Bài hát sẽ được load động từ Javascript -->
+          </div>
+        </div>
+
+        <!-- Bên phải: Trình phát nhạc dễ thương -->
+        <div class="music-player-section">
+          <div class="player-card">
+            <div class="player-title">💝 Bản Nhạc Cho Em 💝</div>
+            
+            <!-- Ảnh quay tròn khi phát nhạc -->
+            <div class="player-album-art">
+              <img src="girlfriend_login.png" alt="Song Cover" id="player-cover" class="rotating-paused">
+            </div>
+            
+            <div class="player-info">
+              <div class="song-title" id="player-song-title">Tên Bài Hát</div>
+              <div class="song-artist" id="player-song-artist">Ca sĩ</div>
+            </div>
+
+            <!-- Thanh tiến trình phát nhạc -->
+            <div class="progress-container">
+              <span class="time-display" id="time-current">00:00</span>
+              <input type="range" id="progress-bar" min="0" max="100" value="0">
+              <span class="time-display" id="time-total">00:00</span>
+            </div>
+
+            <!-- Các nút điều khiển phát nhạc -->
+            <div class="player-controls">
+              <button class="ctrl-btn" id="speed-btn" onclick="changePlaybackSpeed()">1.0x</button>
+              <button class="ctrl-btn" id="prev-btn" onclick="skipAudio(-10)"><i class="fa-solid fa-backward-step"></i></button>
+              <button class="ctrl-btn play-pause-btn" id="play-btn" onclick="togglePlay()"><i class="fa-solid fa-play"></i></button>
+              <button class="ctrl-btn" id="next-btn" onclick="skipAudio(10)"><i class="fa-solid fa-forward-step"></i></button>
+              <button class="ctrl-btn" id="volume-btn" onclick="toggleMute()"><i class="fa-solid fa-volume-high"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Element ẩn phục vụ phát nhạc -->
+  <audio id="main-audio" src=""></audio>
+
+  <!-- ================= POPUP ẢNH (ALBUM ẢNH) ================= -->
+  <div class="popup-overlay hidden" id="gallery-popup">
+    <div class="popup-content gallery-content">
+      <!-- Tiêu đề album -->
+      <div class="gallery-header">
+        <h3 id="gallery-title">Gallery Ảnh Tình Yêu - Số 1/5</h3>
+      </div>
+      
+      <!-- Nút đóng -->
+      <button id="close-gallery-btn" class="popup-close-btn" onclick="closePopup('gallery-popup')">&times;</button>
+      
+      <!-- Khu vực hiển thị ảnh -->
+      <div class="gallery-viewer">
+        <button id="gallery-prev-btn" class="gallery-nav-btn prev" onclick="navigateGallery(-1)">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        
+        <div class="gallery-img-container">
+          <img src="" alt="Album Photo" id="gallery-current-image">
+        </div>
+        
+        <button id="gallery-next-btn" class="gallery-nav-btn next" onclick="navigateGallery(1)">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Nút thả tim dễ thương ở bên dưới -->
+      <div class="gallery-footer">
+        <button id="gallery-heart-btn" class="heart-effect-btn" onclick="triggerHeartBurst(event)">
+          <i class="fa-solid fa-heart"></i> Bấm để thả tim bé yêu 💖
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container chứa hiệu ứng trái tim bay lên khi thả tim -->
+  <div id="heart-burst-container"></div>
+
+  <!-- ================= POPUP THƯ (THƯ TÌNH) ================= -->
+  <div class="popup-overlay hidden" id="letter-popup">
+    <div class="popup-content letter-content-wrapper">
+      <button id="close-letter-btn" class="popup-close-btn" onclick="closePopup('letter-popup')">&times;</button>
+      
+      <div class="letter-envelope">
+        <div class="letter-paper">
+          <h2 class="letter-title">💌 Gửi Bé Yêu Của Anh 💌</h2>
+          <div class="letter-text">
+            <p>Bé yêu à,</p>
+            <p>Hôm nay là một ngày vô cùng đặc biệt - ngày kỷ niệm chúng mình bên nhau. Anh muốn tạo ra trang web này để lưu giữ lại những kỷ niệm ngọt ngào nhất của hai đứa.</p>
+            <p>Từ ngày có em bước vào cuộc sống của anh, mọi thứ đều trở nên rực rỡ và tràn ngập niềm vui. Anh yêu nụ cười của em, yêu cách em cười híp mắt khi vui, và cả những lúc em dỗi hờn nữa. Cảm ơn em đã luôn đồng hành, chia sẻ và bao dung với anh trong suốt thời gian qua.</p>
+            <p>Mong rằng chúng mình sẽ cùng nhau đi qua thật nhiều năm kỷ niệm nữa, cùng xây dựng thêm thật nhiều khoảnh khắc hạnh phúc. Anh hứa sẽ luôn yêu thương, che chở và là chỗ dựa vững chắc cho em.</p>
+            <p>Chúc mừng ngày kỷ niệm của chúng mình! Yêu em nhiều hơn mỗi ngày! 💕</p>
+            <p class="letter-signature">Chàng trai của em 💖</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= POPUP FALLING FOR YOU (NHÚNG TRANG 3D) ================= -->
+  <div class="popup-overlay hidden" id="falling-popup">
+    <!-- Nút đóng iframe nằm đè lên góc trên -->
+    <button id="close-falling-btn" class="popup-close-btn iframe-close-btn" onclick="closeFallingForYou()">&times;</button>
+    <iframe id="falling-iframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
+  </div>
+
+  <!-- JavaScript xử lý hoạt động -->
+  <script src="script.js"></script>
+</body>
+</html>
